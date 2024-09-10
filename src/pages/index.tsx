@@ -1,13 +1,12 @@
 import Head from "next/head";
-import Link from "next/link";
-import Nav from "@/components/Nav";
 
 import axios from "axios";
 
 export default function Home() {
-  const submitForm = async (e) => {
+  const submitForm = async (e: FormDataEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.target as HTMLFormElement);
     console.log({ formData });
     const name = formData.get("name");
     const phone = formData.get("phone");
@@ -81,7 +80,7 @@ export default function Home() {
           <div>
             <form
               className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg md:mx-0 md:p-8 lg:p-10"
-              onSubmit={submitForm}
+              onSubmit={(e) => submitForm(e as unknown as FormDataEvent)}
             >
               <h2 className="mb-4 text-center text-2xl font-bold text-green-500">
                 Demandez une estimation gratuite
@@ -127,44 +126,5 @@ export default function Home() {
         </div>
       </main>
     </>
-  );
-}
-
-function ClockIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  );
-}
-
-function StarIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
   );
 }
