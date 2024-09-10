@@ -2,7 +2,27 @@ import Head from "next/head";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 
+import axios from "axios";
+
 export default function Home() {
+  const submitForm = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    console.log({ formData });
+    const name = formData.get("name");
+    const phone = formData.get("phone");
+
+    if (!name || !phone) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    await axios.post("/api/lead", { name, phone }).then((res) => {
+      console.log(res);
+      alert("Thank you for your submission!");
+    });
+  };
+
   return (
     <>
       <Head>
@@ -59,7 +79,10 @@ export default function Home() {
             Éliminer les rongeurs pour de bon.
           </p>
           <div>
-            <form className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg md:mx-0 md:p-8 lg:p-10">
+            <form
+              className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg md:mx-0 md:p-8 lg:p-10"
+              onSubmit={submitForm}
+            >
               <h2 className="mb-4 text-center text-2xl font-bold text-green-500">
                 Demandez une estimation gratuite
               </h2>
@@ -73,6 +96,7 @@ export default function Home() {
                 <input
                   className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   id="name"
+                  name="name"
                   type="text"
                   placeholder="Gylaine Tremblay"
                 />
@@ -85,6 +109,7 @@ export default function Home() {
                   Numéro de téléphone
                 </label>
                 <input
+                  name="phone"
                   id="phone"
                   type="tel"
                   placeholder="(555) 555-5555"
